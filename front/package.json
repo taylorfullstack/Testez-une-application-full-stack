@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "start": "ng serve",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watch",
+    "posttest": "open coverage/lcov-report/index.html",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "e2e:ci": "ng run yoga:e2e-ci",
@@ -30,8 +31,8 @@
     "zone.js": "0.11.8"
   },
   "devDependencies": {
-    "@angular-builders/jest": "14.0.1",
     "@angular-builders/custom-webpack": "^14.0.1",
+    "@angular-builders/jest": "14.0.1",
     "@angular-devkit/build-angular": "14.2.1",
     "@angular-eslint/builder": "14.0.3",
     "@angular-eslint/eslint-plugin": "14.0.3",
@@ -43,6 +44,7 @@
     "@briebug/jest-schematic": "4.0.0",
     "@cypress/code-coverage": "3.10.0",
     "@cypress/schematic": "2.0.3",
+    "@hirez_io/observer-spy": "^2.2.0",
     "@istanbuljs/nyc-config-typescript": "1.0.2",
     "@jsdevtools/coverage-istanbul-loader": "3.0.5",
     "@types/jest": "28.1.3",
