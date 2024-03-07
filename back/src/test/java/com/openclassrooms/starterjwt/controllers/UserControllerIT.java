@@ -59,6 +59,7 @@ public class UserControllerIT {
     @DisplayName("Find user by ID - Bad Request")
     @WithMockUser(username = TEST_ADMIN_EMAIL, roles = TEST_ADMIN_ROLE)
     void findById_BadRequest() throws Exception {
+        // Get the total number of users before the operation
         Integer countBefore = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users", Integer.class);
 
         mockMvc.perform(get("/api/user/abc")
