@@ -5,21 +5,25 @@ import com.openclassrooms.starterjwt.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.openclassrooms.starterjwt.testUtils.TestConstants.*;
+import static com.openclassrooms.starterjwt.testUtils.TestConstants.TEST_USER_PASSWORD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    private static final Long EXISTING_USER_ID = 1L;
+    private static final Long MOCK_USER_ID = 1L;
     private static final Long NON_EXISTING_USER_ID = 2L;
 
     @InjectMocks
@@ -28,25 +32,16 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    private User expectedUser;
+    private User mockUser;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this); // Initialize mocks
-
-        expectedUser = createUser(EXISTING_USER_ID);
-
-        when(userRepository.findById(EXISTING_USER_ID)).thenReturn(Optional.of(expectedUser));
-        when(userRepository.findById(NON_EXISTING_USER_ID)).thenReturn(Optional.empty());
-    }
-
-    private User createUser(Long id) {
-        return new User(
-                id,
-                "user@test.com",
-                "Doe",
-                "John",
-                "123456",
+        mockUser = new User(
+                MOCK_USER_ID,
+                TEST_USER_EMAIL,
+                TEST_USER_LAST_NAME,
+                TEST_USER_FIRST_NAME,
+                TEST_USER_PASSWORD,
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now()
@@ -54,28 +49,34 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("When delete is called, then delete user by id")
+    @DisplayName("Delete User")
     void shouldDeleteUserWhenDeleteIsCalled() {
         // Act
-        userService.delete(EXISTING_USER_ID);
+        userService.delete(MOCK_USER_ID);
 
         // Assert
-        verify(userRepository).deleteById(EXISTING_USER_ID);
+        verify(userRepository).deleteById(MOCK_USER_ID);
     }
 
     @Test
-    @DisplayName("When findById is called with existing id, then return the user")
+    @DisplayName("Find User By Existing ID")
     void shouldReturnUserWhenFindByIdIsCalledWithExistingId() {
+        // Arrange
+        when(userRepository.findById(MOCK_USER_ID)).thenReturn(Optional.of(mockUser));
+
         // Act
-        User actualUser = userService.findById(EXISTING_USER_ID);
+        User actualUser = userService.findById(MOCK_USER_ID);
 
         // Assert
-        assertEquals(expectedUser, actualUser);
+        assertEquals(mockUser, actualUser);
     }
 
     @Test
-    @DisplayName("When findById is called with non-existing id, then return null")
+    @DisplayName("Find User By Non-Existing ID")
     void shouldReturnNullWhenFindByIdIsCalledWithNonExistingId() {
+        // Arrange
+        when(userRepository.findById(NON_EXISTING_USER_ID)).thenReturn(Optional.empty());
+
         // Act
         User actualUser = userService.findById(NON_EXISTING_USER_ID);
 

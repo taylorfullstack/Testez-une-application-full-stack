@@ -5,22 +5,27 @@ import com.openclassrooms.starterjwt.repository.TeacherRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static com.openclassrooms.starterjwt.testUtils.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class TeacherServiceTest {
 
-    private static final Long EXISTING_TEACHER_ID = 1L;
+    private static final Long MOCK_TEACHER_ID = 1L;
+
+    private static final Long NEW_TEACHER_ID = 2L;
     private static final Long NON_EXISTING_TEACHER_ID = 3L;
 
     @InjectMocks
@@ -29,57 +34,58 @@ class TeacherServiceTest {
     @Mock
     private TeacherRepository teacherRepository;
 
-    private Teacher expectedTeacher;
+    private Teacher mockTeacher;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this); // Initialize mocks
-
-        expectedTeacher = createTeacher(EXISTING_TEACHER_ID, "John");
-        Teacher secondTeacher = createTeacher(2L, "Jane");
-
-        when(teacherRepository.findById(EXISTING_TEACHER_ID)).thenReturn(Optional.of(expectedTeacher));
-        when(teacherRepository.findById(2L)).thenReturn(Optional.of(secondTeacher));
-        when(teacherRepository.findById(NON_EXISTING_TEACHER_ID)).thenReturn(Optional.empty());
-
-        List<Teacher> expectedTeachers = Arrays.asList(expectedTeacher, secondTeacher);
-        when(teacherRepository.findAll()).thenReturn(expectedTeachers);
+        mockTeacher = createTeacher(MOCK_TEACHER_ID);
     }
 
-    private Teacher createTeacher(Long id, String firstName) {
+    private Teacher createTeacher(Long id) {
         return new Teacher(
                 id,
-                "mockLastName",
-                firstName,
+                TEST_TEACHER_LAST_NAME,
+                TEST_TEACHER_FIRST_NAME,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
     }
 
     @Test
-    @DisplayName("When findAll is called, then return all teachers")
+    @DisplayName("Find all teachers")
     void shouldReturnAllTeachersWhenFindAllIsCalled() {
+        // Arrange
+        Teacher secondTeacher = createTeacher(NEW_TEACHER_ID);
+        List<Teacher> expectedTeachers = Arrays.asList(mockTeacher, secondTeacher);
+        when(teacherRepository.findAll()).thenReturn(expectedTeachers);
+
         // Act
         List<Teacher> actualTeachers = teacherService.findAll();
 
         // Assert
         assertEquals(2, actualTeachers.size());
-        assertEquals(expectedTeacher, actualTeachers.get(0));
+        assertEquals(mockTeacher, actualTeachers.get(0));
     }
 
     @Test
-    @DisplayName("When findById is called with existing id, then return the teacher")
+    @DisplayName("Find Teacher By Existing ID")
     void shouldReturnTeacherWhenFindByIdIsCalledWithExistingId() {
+        // Arrange
+        when(teacherRepository.findById(MOCK_TEACHER_ID)).thenReturn(Optional.of(mockTeacher));
+
         // Act
-        Teacher actualTeacher = teacherService.findById(EXISTING_TEACHER_ID);
+        Teacher actualTeacher = teacherService.findById(MOCK_TEACHER_ID);
 
         // Assert
-        assertEquals(expectedTeacher, actualTeacher);
+        assertEquals(mockTeacher, actualTeacher);
     }
 
     @Test
-    @DisplayName("When findById is called with non-existing id, then return null")
+    @DisplayName("Find Teacher By Non-Existing ID")
     void shouldReturnNullWhenFindByIdIsCalledWithNonExistingId() {
+        // Arrange
+        when(teacherRepository.findById(NON_EXISTING_TEACHER_ID)).thenReturn(Optional.empty());
+
         // Act
         Teacher actualTeacher = teacherService.findById(NON_EXISTING_TEACHER_ID);
 
