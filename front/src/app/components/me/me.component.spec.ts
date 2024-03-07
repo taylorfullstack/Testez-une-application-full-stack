@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { SessionService } from 'src/app/services/session.service';
 
@@ -66,13 +67,13 @@ describe('MeComponent', () => {
     };
   }
 
-  function setupTestBed(user: User) {
+  async function setupTestBed(user: User) {
     userServiceMock = setupUserServiceMock(user);
     sessionServiceMock = setupSessionServiceMock(user);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [MeComponent],
-      imports: [MatSnackBarModule],
+      imports: [MatSnackBarModule, MatCardModule, MatIconModule],
       providers: [
         { provide: SessionService, useValue: sessionServiceMock },
         { provide: UserService, useValue: userServiceMock },
@@ -87,8 +88,8 @@ describe('MeComponent', () => {
   }
 
   describe('when user is an admin', () => {
-    beforeEach(() => {
-      setupTestBed(mockAdmin);
+    beforeEach(async () => {
+      await setupTestBed(mockAdmin);
     });
 
     it('should display the admin data', () => {
@@ -109,7 +110,7 @@ describe('MeComponent', () => {
 
   describe('when user is a regular user', () => {
     beforeEach(async () => {
-      setupTestBed(mockUser);
+      await setupTestBed(mockUser);
     });
 
     it('should display the user data', () => {
