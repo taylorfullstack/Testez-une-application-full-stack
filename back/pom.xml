@@ -16,7 +16,7 @@
 	<description>The best backend for a Yoga app !</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
@@ -81,7 +81,6 @@
 			<artifactId>mapstruct-processor</artifactId>
 			<version>1.5.1.Final</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
@@ -113,13 +112,19 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.5</version>
+				<configuration>
+					<excludes>
+						<exclude>**/models/**</exclude>
+						<exclude>**/dto/**</exclude>
+						<exclude>**/SpringBootSecurityJwtApplication.class</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
-					<!-- attached to Maven test phase -->
 					<execution>
 						<id>report</id>
 						<phase>test</phase>
