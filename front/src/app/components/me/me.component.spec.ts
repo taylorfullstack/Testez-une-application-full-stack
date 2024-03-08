@@ -3,46 +3,22 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { SessionService } from 'src/app/services/session.service';
-
+import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { MeComponent } from './me.component';
 import { User } from "../../interfaces/user.interface";
 import { expect } from '@jest/globals';
+import { mockAdmin, mockUser } from '../../../test-constants';
 
 describe('MeComponent', () => {
   let component: MeComponent;
   let fixture: ComponentFixture<MeComponent>;
   let userServiceMock: Partial<UserService>;
   let sessionServiceMock: Partial<SessionService>;
-
-  const routerMock : Partial<Router> = {
-    navigate: jest.fn(),
-  };
-
-  const matSnackBarMock : Partial<MatSnackBar> = {
-    open: jest.fn(),
-  };
-  const mockAdmin: User = {
-    id: 1,
-    email: "admin@test.com",
-    lastName: "adminLastName",
-    firstName: "adminFirstName",
-    admin: true,
-    password: "password",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-
-  const mockUser: User = {
-    ...mockAdmin,
-    id: 2,
-    email: "user@test.com",
-    lastName: "userLastName",
-    firstName: "userFirstName",
-    admin: false,
-  };
+  let matSnackBarMock: Partial<MatSnackBar>;
+  let routerMock = { navigate: jest.fn() };
 
   function setupUserServiceMock(user: User): Partial<UserService> {
     return {
@@ -70,15 +46,18 @@ describe('MeComponent', () => {
   async function setupTestBed(user: User) {
     userServiceMock = setupUserServiceMock(user);
     sessionServiceMock = setupSessionServiceMock(user);
+    matSnackBarMock = {
+      open: jest.fn(),
+    };
 
     await TestBed.configureTestingModule({
       declarations: [MeComponent],
-      imports: [MatSnackBarModule, MatCardModule, MatIconModule],
+      imports: [MatSnackBarModule, MatCardModule, MatIconModule, RouterTestingModule],
       providers: [
         { provide: SessionService, useValue: sessionServiceMock },
         { provide: UserService, useValue: userServiceMock },
-        { provide: Router, useValue: routerMock },
         { provide: MatSnackBar, useValue: matSnackBarMock },
+        { provide: Router, useValue: routerMock },
       ],
     }).compileComponents();
 
@@ -129,21 +108,19 @@ describe('MeComponent', () => {
     });
 
     it('should delete the user account and navigate to home when the delete button is clicked', (() => {
-      const navigateSpy = jest.spyOn(routerMock, 'navigate');
       const snackBarSpy = jest.spyOn(matSnackBarMock, 'open');
       component.delete();
       expect(userServiceMock.delete).toHaveBeenCalledWith(mockUser.id.toString());
       expect(snackBarSpy).toHaveBeenCalledWith("Your account has been deleted !", 'Close', { duration: 3000 });
       expect(sessionServiceMock.logOut).toHaveBeenCalled();
-      expect(navigateSpy).toHaveBeenCalledWith(['/']);
-      navigateSpy.mockRestore();
+      expect(routerMock.navigate).toHaveBeenCalledWith(['/']);
     }));
   });
 
   it('should navigate back when back button is clicked', () => {
     const backSpy = jest.spyOn(window.history, 'back');
-    component.back();
+    component.back()
+    expect(routerMock.navigate).toHaveBeenCalled();
     expect(backSpy).toHaveBeenCalled();
-    backSpy.mockRestore();
   });
 });
