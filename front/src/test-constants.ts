@@ -3,6 +3,7 @@ import { User } from "./app/interfaces/user.interface";
 import { SessionInformation } from "./app/interfaces/sessionInformation.interface";
 import { LoginRequest } from "./app/features/auth/interfaces/loginRequest.interface";
 import {Teacher} from "./app/interfaces/teacher.interface";
+import {RegisterRequest} from "./app/features/auth/interfaces/registerRequest.interface";
 
 export const mockAdmin: User = {
   id: 1,
@@ -45,4 +46,11 @@ export const mockTeacher: Teacher = {
 export const mockLoginRequest: LoginRequest = {
   email: "email@test.com",
   password: "password"
+}
+
+export const mockRegisterRequest: RegisterRequest = {
+  email: "newuser@test.com",
+  password: "password",
+  firstName: "newUserFirstName",
+  lastName: "newUserLastName"
 }
