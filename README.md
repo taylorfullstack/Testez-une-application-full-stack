@@ -1,14 +1,23 @@
 # NumDev - Yoga App
 ![image](https://github.com/taylorfullstack/Testez-une-application-full-stack/assets/76629753/9d04e5a4-abe1-43b5-a499-4c1201355aea)
 
+## Database Setup
 
-## Prerequisites
+This project uses MySQL for its database. Follow these steps to set up the database:
 
-- 🚧
+1. Install MySQL on your system. You can download it from the official MySQL website and follow the instructions there to install it.
 
-## Database Installation
+2. Once MySQL is installed, you need to create a new database for the project. You can do this by logging into MySQL and running the command `CREATE DATABASE <database_name>;`, replacing `<database_name>` with the name of your database.
 
-- 🚧
+3. The `application.properties` file in the `back/src/main/resources` directory contains the configuration for the database connection. You need to ensure that the `spring.datasource.url`, `spring.datasource.username`, and `spring.datasource.password` properties match your MySQL setup. The current configuration is as follows:
+
+    ```properties
+    spring.datasource.url=jdbc:mysql://localhost:3306/<database_name>?allowPublicKeyRetrieval=true
+    spring.datasource.username=<your_username>
+    spring.datasource.password=<your_password>
+    ```
+
+    Replace `<database_name>`, `<your_username>`, and `<your_password>` with the name of your database, your MySQL username, and your MySQL password respectively.
 
 ## Application Installation
 
