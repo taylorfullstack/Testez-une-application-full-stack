@@ -1,82 +1,113 @@
 # NumDev - Yoga App
+![image](https://github.com/taylorfullstack/Testez-une-application-full-stack/assets/76629753/9d04e5a4-abe1-43b5-a499-4c1201355aea)
+
 
 ## Prerequisites
 
 - 🚧
-- 
-## Installation
+
+## Database Installation
 
 - 🚧
 
-### Database
+## Application Installation
 
-- 🚧
+1. Fork this repository
 
-### Frontend
+    Click on the fork button in the top right corner of the [repository](https://github.com/taylorfullstack/Testez-une-application-full-stack) page.
 
-#### 1. Fork this repository
+2. Clone the forked respository to your local machine
 
-- Click on the fork button in the top right corner of the [repository](https://github.com/taylorfullstack/Testez-une-application-full-stack) page.
+    - Replace the url below with the url of your forked repository.
 
-#### 2. Clone the forked respository to your local machine
+        `https://github.com/your-username/project-name.git`
 
-- Replace the url below with the url of your forked repository.
+    - Open a terminal window and navigate to the directory that will store your project.
 
-    `https://github.com/your-username/project-name.git`
+        ```bash
+        cd project-name
+        ```
 
-- Open a terminal window and navigate to the directory that will store your project.
+    - In your terminal, run the command below. The dot at the end will clone the project into the current directory.
 
-    ```bash
-    cd project-name
-    ```
+        ```bash
+        git clone https://github.com/your-username/project-name.git .
+        ```
 
-- In your terminal, run the command below. The dot at the end will clone the project into the current directory.
+3. Install the frontend dependencies
 
-    ```bash
-    git clone https://github.com/your-username/project-name.git .
-    ```
+    - In your terminal, run the command below to install the dependencies listed in the package.json file.
+    
+        ```bash
+        cd front
+        npm install
+        ```
 
-#### 3. Install the frontend dependencies
+4. Install the backend dependencies
 
-- In your terminal, run the command below to install the dependencies listed in the package.json file.
+    - In your terminal, run the command below to install the dependencies listed in the pom.xml file.
+    
+      ```bash
+      cd back
+      mvn clean install
+      ```
+
+## Launch the application
+
+1. Frontend
 
     ```bash
     cd front
-    npm install
-    ```
-
-#### 4. Launch the frontend
-
-- In your terminal, run the command below to launch the project.
-
-    ```bash
     npm run start
     ```
 
-    The project will launch in your browser at `http://localhost:4200`
+    The frontend will launch in your browser at `http://localhost:4200`
+  
+2. Backend
+
+      ```bash
+      cd back
+      mvn spring-boot:run
+      ```
+
+    - The backend server will launch at `http://localhost:8080`
 
 ---
 
-### Backend
-
-- 🚧
-
-Follow the instructions in the backend readme 🚧 to install the backend.
-
 ## Launch Tests - with coverage
-- 🚧
 
 ### Frontend - Unit and Integration
-- 🚧
+
+```bash
+cd front
+npm run test
+```
+
 
 ### Frontend - End-to-End
-- 🚧
+
+```bash
+cd front
+npm run e2e
+```
 
 ### Backend - Unit and integration
-- 🚧
 
+1. Run the tests and generate a coverage report in the target/site/jacoco directory.
+
+    ```bash
+    cd back
+    mvn test
+    ```
+    
+2. Open the coverage report by navigating to the `target/site/jacoco` directory and opening the `index.html` file in a browser.
 ---
 
 ## Technologies
-
-
+- Java
+- Spring Boot
+- Mockito
+- Angular
+- MySQL
+- Jest
+- Cypress
